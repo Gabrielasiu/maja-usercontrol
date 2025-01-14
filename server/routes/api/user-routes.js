@@ -38,9 +38,9 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-//create new user
+//create new user LE QUITE EL IS ADMIN
 router.post('/register', async (req, res) => {
-  const { user_name, email, password, admin } = req.body;
+  const { user_name, email, password } = req.body;
 
   // Validación manual
   if (!user_name || !email || !password) {
@@ -48,7 +48,7 @@ router.post('/register', async (req, res) => {
   }
 
   try {
-    const newUser = await User.create({ user_name, email, password, admin });
+    const newUser = await User.create({ user_name, email, password });
     res.status(200).json(newUser);
   } catch (err) {
     console.error(err);
