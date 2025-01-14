@@ -1,8 +1,11 @@
 const router = require('express').Router();
 const { where } = require('sequelize');
 const { User } = require('../../models');
-
+// IMPORTAR CONTROLADOR DE LOGIN
+const {login} = require('../../utils/jwtauth');
 // The `/api/users` endpoint
+
+router.post('/login', login);
 
 router.get('/', async (req, res) => {
   // find all users

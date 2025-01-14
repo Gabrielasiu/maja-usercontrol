@@ -1,0 +1,50 @@
+
+<!-- Loop over each object in the projects array -->
+{{!-- {{#each matchups as |matchup|}}
+<div>
+  <h1>{{matchup.artistA}} VS {{matchup.artistB}}</h1>
+  <p class='numberOfVotes'>Votes for {{matchup.artistA}}: <span class='votes-count'>{{matchup.votesA}}</span></p>
+  <p class='numberOfVotes'>Votes for {{matchup.artistB}}: <span class='votes-count'>{{matchup.votesB}}</span></p>
+  <button class= "votes" id='{{matchup.id}}-a' data-matchup ='{{matchup.id}}' data-artistA ='{{matchup.artistA}}'>VOTE {{matchup.artistA}}</button>
+  <button class= "votes" id='{{matchup.id}}-b' data-matchup ='{{matchup.id}}' data-artistB ='{{matchup.artistB}}'>VOTE {{matchup.artistB}}</button>
+</div> 
+{{/each}}
+ --}}
+
+<h3 class="text-center mb-4" style="font-weight: 200;">Which artist would you prefer to see in the next festival?</h3>
+<h2 class="text-center">Vote now!</h2>  
+
+<div class="matchups-container">
+  <!-- Loop over each object in the projects array -->
+  {{#each matchups as |matchup|}}
+  <div class="matchup-block">
+
+    <div class="info-matchup">
+      <img src="{{matchup.imageA}}" alt="{{matchup.artistA}}">
+      <div class="position-vote">
+        <span class="total-votes">{{matchup.votesA}}</span>
+      </div>
+      <div class="votes" id='{{matchup.id}}-a' data-matchup ='{{matchup.id}}' data-artistA ='{{matchup.artistA}}'>
+        <span>VOTE for {{matchup.artistA}}</span>
+      </div>
+    </div>
+
+    <div class="middle">
+      <h3>VS</h3>
+    </div>
+
+    <div class="info-matchup">
+      <img src="{{matchup.imageB}}" alt="{{matchup.artistB}}">
+      <div class="position-vote">
+        <span class="total-votes">{{matchup.votesB}}</span>
+      </div>
+      <div class="votes" id='{{matchup.id}}-b' data-matchup ='{{matchup.id}}' data-artistB ='{{matchup.artistB}}'>
+        <span>VOTE for {{matchup.artistB}}</span>
+      </div>
+    </div>
+
+  </div> 
+  {{/each}}
+</div>
+
+<script src='js/matchup.js'></script>
