@@ -13,7 +13,7 @@ const SignUp = () => {
 
     if (user_name && email && password) {
       try {
-        const response = await fetch('/api/users/register', {
+        const response = await fetch('http://localhost:3001/api/users/register', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ user_name, email, password }),
