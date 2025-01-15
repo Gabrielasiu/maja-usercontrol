@@ -1,15 +1,55 @@
 const router = require('express').Router();
 const { where } = require('sequelize');
 const { User } = require('../../models');
+const { signToken } = require('../../utils/jwtauth');
 // IMPORTAR CONTROLADOR DE LOGIN
-const {login} = require('../../utils/jwtauth');
+// const {login} = require('../../utils/jwtauth');
 // The `/api/users` endpoint
 
-router.post('/login', login);
+// router.post('/login', login);
+
+router.post('/login', async (req, res) => {
+  // console.log("LOGIN");
+  // try {
+  //   const userData = await User.findOne({ where: { email: req.body.email } });
+
+  //   if (!userData) {
+  //     res
+  //       .status(400)
+  //       .json({ message: 'Incorrect email or password, please try again' });
+  //     return;
+  //   }
+
+  //   const validPassword = userData.isCorrectPassword(req.body.password);
+
+  //   if (!validPassword) {
+  //     res
+  //       .status(400)
+  //       .json({ message: 'Incorrect email or password, please try again' });
+  //     return;
+  //   }
+
+  //   res.json({ user: userData, message: 'You are now logged in!' });
+
+  // } catch (err) {
+  //   console.log("error: ", err);
+  //   res.status(400).json(err);
+  // }
+  const { email, password } = req.body;
+  const user = await User.findOne({ where: { email } });
+
+  if (!user || !(user.isCorrectPassword(password))) {
+    return res.status(401).json({ message: 'Credenciales inválidas' });
+  }
+
+  // Generar token
+  const token = signToken(user);
+  res.json({ token });
+});
+
 
 router.get('/', async (req, res) => {
   // find all users
-  // be sure to include its associated Products
   try {
     const userData = await User.findAll({
     });
@@ -55,16 +95,6 @@ router.post('/register', async (req, res) => {
     res.status(400).json(err);
   }
 });
-// router.post('/', async (req, res) => {
-//   try {
-//     const newUser = await User.create({
-//       user_name: req.body.user_name,
-//     });
-//     res.status(200).json(newUser);
-//   } catch (err) {
-//     res.status(400).json(err);
-//   }
-// });
 
 
 

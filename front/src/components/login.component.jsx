@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Auth from '../utils/auth'
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -13,7 +14,7 @@ const Login = () => {
 
     if (email && password) {
       try {
-        const response = await fetch('/api/users/sign-in', {
+        const response = await fetch('http://localhost:3001/api/users/login', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ email, password }),
@@ -21,7 +22,10 @@ const Login = () => {
 
         if (response.ok) {
           console.log('Redirigiendo al panel de usuarios...');
-          navigate('/users'); // Redirección funcional
+          const user = await response.json();
+          console.log("response LOGIN: ", user);
+          Auth.login(user.token);
+          // navigate('/users'); // Redirección funcional
         } else {
           alert('Invalid credentials.');
         }

@@ -1,5 +1,5 @@
 // route to get logged in user's info (needs the token)
-const api = 'http://localhost:3000/api/'
+const api = 'http://localhost:3001/api/'
 export const getUsers = () => {
   return fetch(`${api}/users`, {
     headers: {
@@ -8,6 +8,16 @@ export const getUsers = () => {
     },
   });
 };
+
+//GET ME ruta para verificar que soy administradora
+// export const getMe = (token) => {
+//   return fetch('/api/users/me', {
+//     headers: {
+//       'Content-Type': 'application/json',
+//       authorization: `Bearer ${token}`,
+//     },
+//   });
+// };
 
 export const createUser = (userData) => {
   return fetch('/api/users', {

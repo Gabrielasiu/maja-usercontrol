@@ -1,82 +1,15 @@
-// import React from 'react';
-// import { useState, useEffect } from 'react';
-// import { getUsers } from '../utils/API';
-// import { deleteUser } from '../utils/API';
-// const UsersPanel = () => {
-//   const [users, setUsers] = useState([]);
-
-//   useEffect(() => {
-//     const fetchUsers = async () => {
-//       try {
-//         const response = await getUsers();
-//         if (!response.ok) {
-//           throw new Error(`HTTP error! status: ${response.status}`);
-//         }
-//         const result = await response.json();
-//         setUsers(result); // Guardar datos en el estado
-//       } catch (err) {
-//         console.log("error: ", err);
-//       }
-//     };
-
-//     fetchUsers(); // Llamar la función al cargar el componente
-//   }, []); //
-//   const handleDelete = async (id) => {
-//     try {
-//       const response = await deleteUser(id); // Llama a la API para eliminar al usuario
-//       if (!response.ok) {
-//         throw new Error(`HTTP error! status: ${response.status}`);
-//       }
-//       setUsers((prevUsers) => prevUsers.filter((user) => user.id !== id)); // Actualiza el estado local
-//     } catch (err) {
-//       console.log("Error al eliminar el usuario: ", err);
-//     }
-//   };
-
-//   if (users.length > 0) {
-//     return (
-//       <div style={{ padding: '20px' }}>
-//         <h1>Users Panel</h1>
-//         <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-//           <thead>
-//             <tr>
-//               <th style={{ border: '1px solid #ddd', padding: '8px' }}>ID</th>
-//               <th style={{ border: '1px solid #ddd', padding: '8px' }}>Name</th>
-//               <th style={{ border: '1px solid #ddd', padding: '8px' }}>Email</th>
-//               <th style={{ border: '1px solid #ddd', padding: '8px' }}>Actions</th>
-//             </tr>
-//           </thead>
-//           <tbody>
-//             {users.map((user) => (
-//               <tr key={user.id}>
-//                 <td style={{ border: '1px solid #ddd', padding: '8px' }}>{user.id}</td>
-//                 <td style={{ border: '1px solid #ddd', padding: '8px' }}>{user.user_name}</td>
-//                 <td style={{ border: '1px solid #ddd', padding: '8px' }}>{user.email}</td>
-//                 <td style={{ border: '1px solid #ddd', padding: '8px', textAlign: 'center' }}>
-//                   <button onClick={() => handleDelete(user.id)} style={{ padding: '5px 10px', color: 'white', backgroundColor: 'red', border: 'none', borderRadius: '4px' }}>
-//                     Eliminar
-//                   </button>
-//                 </td>
-//               </tr>
-//             ))}
-//           </tbody>
-//         </table>
-//       </div>
-//     );
-//   };
-//   }
-  
- 
-
-// export default UsersPanel;
 import React, { useState, useEffect } from 'react';
-import { getUsers, deleteUser, updateUser } from '../utils/API';
+import { getUsers, deleteUser, updateUser, getMe } from '../utils/API';
+import Auth from '../utils/auth';
 
 const UsersPanel = () => {
-  const [users, setUsers] = useState([]);
+  const [users, setUsers, setUserData] = useState([]);
   const [editingUserId, setEditingUserId] = useState(null); // Usuario en edición
-  const [editedName, setEditedName] = useState(''); // Nombre temporal durante la edición
+  const [editedFields, setEditedFields] = useState({}); // Campos editados temporalmente
 
+  const loggedInUser = Auth.getProfile();
+
+  console.log("USUARIO LOGGEADO: ", loggedInUser);
   useEffect(() => {
     const fetchUsers = async () => {
       try {
@@ -90,7 +23,27 @@ const UsersPanel = () => {
         console.log("error: ", err);
       }
     };
+    // const getUserData = async() => {
+    //   try {
+    //     const token = Auth.loggedIn() ? Auth.getToken() : null;
 
+    //     if (!token) {
+    //       return false;
+    //     }
+
+    //     const response = await getMe(token);
+
+    //     if (!response.ok) {
+    //       throw new Error('something went wrong!');
+    //     }
+
+    //     const user = await response.json();
+    //     setUserData(user);
+    //   } catch (err) {
+    //     console.error(err);
+    //   }
+    // }
+    // getUserData();
     fetchUsers(); // Llamar la función al cargar el componente
   }, []);
 
@@ -106,25 +59,27 @@ const UsersPanel = () => {
     }
   };
 
-  const handleDoubleClick = (userId, currentName) => {
-    setEditingUserId(userId);
-    setEditedName(currentName);
+  const handleDoubleClick = (userId, field, currentValue) => {
+    if (loggedInUser.isAdmin) {
+      setEditingUserId(userId);
+      setEditedFields({ ...editedFields, [field]: currentValue });
+    }
   };
 
-  const handleNameChange = (e) => {
-    setEditedName(e.target.value);
+  const handleFieldChange = (e, field) => {
+    setEditedFields({ ...editedFields, [field]: e.target.value });
   };
 
   const handleBlur = async (userId) => {
     if (userId === null) return; // Asegurarse de no guardar si no hay usuario en edición
     try {
-      const response = await updateUser(userId, { user_name: editedName }); // Actualiza el nombre en la API
+      const response = await updateUser(userId, editedFields); // Actualiza los campos en la API
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       setUsers((prevUsers) =>
         prevUsers.map((user) =>
-          user.id === userId ? { ...user, user_name: editedName } : user
+          user.id === userId ? { ...user, ...editedFields } : user
         )
       );
       setEditingUserId(null); // Finaliza la edición
@@ -140,6 +95,27 @@ const UsersPanel = () => {
     }
   };
 
+  const deleteCell = (user) => {
+    if (loggedInUser.isAdmin) {
+      return (
+        <td style={{ border: '1px solid #ddd', padding: '8px', textAlign: 'center' }}>
+        <button
+          onClick={() => handleDelete(user.id)}
+          style={{
+            padding: '5px 10px',
+            color: 'white',
+            backgroundColor: 'red',
+            border: 'none',
+            borderRadius: '4px',
+          }}
+        >
+          Eliminar
+        </button>
+      </td>
+      )
+    }
+  }
+
   if (users.length > 0) {
     return (
       <div style={{ padding: '20px' }}>
@@ -150,7 +126,11 @@ const UsersPanel = () => {
               <th style={{ border: '1px solid #ddd', padding: '8px' }}>ID</th>
               <th style={{ border: '1px solid #ddd', padding: '8px' }}>Name</th>
               <th style={{ border: '1px solid #ddd', padding: '8px' }}>Email</th>
-              <th style={{ border: '1px solid #ddd', padding: '8px' }}>Actions</th>
+              {loggedInUser.isAdmin ? (
+                  <th style={{ border: '1px solid #ddd', padding: '8px' }}>Actions</th>
+              ) : (
+                <></>
+              )}
             </tr>
           </thead>
           <tbody>
@@ -159,36 +139,39 @@ const UsersPanel = () => {
                 <td style={{ border: '1px solid #ddd', padding: '8px' }}>{user.id}</td>
                 <td
                   style={{ border: '1px solid #ddd', padding: '8px' }}
-                  onDoubleClick={() => handleDoubleClick(user.id, user.user_name)}
+                  onDoubleClick={() => handleDoubleClick(user.id, "user_name", user.user_name)}
                 >
-                  {editingUserId === user.id ? (
+                  {editingUserId === user.id && editedFields.user_name !== undefined ? (
                     <input
                       type="text"
-                      value={editedName}
-                      onChange={handleNameChange}
-                      onBlur={() => handleBlur(user.id)} // Guarda los cambios al perder el foco
-                      onKeyDown={(e) => handleKeyDown(e, user.id)} // Guarda los cambios al presionar Enter
+                      value={editedFields.user_name}
+                      onChange={(e) => handleFieldChange(e, "user_name")}
+                      onBlur={() => handleBlur(user.id)}
+                      onKeyDown={(e) => handleKeyDown(e, user.id)}
                       autoFocus
                     />
                   ) : (
                     user.user_name
                   )}
                 </td>
-                <td style={{ border: '1px solid #ddd', padding: '8px' }}>{user.email}</td>
-                <td style={{ border: '1px solid #ddd', padding: '8px', textAlign: 'center' }}>
-                  <button
-                    onClick={() => handleDelete(user.id)}
-                    style={{
-                      padding: '5px 10px',
-                      color: 'white',
-                      backgroundColor: 'red',
-                      border: 'none',
-                      borderRadius: '4px',
-                    }}
-                  >
-                    Eliminar
-                  </button>
+                <td
+                  style={{ border: '1px solid #ddd', padding: '8px' }}
+                  onDoubleClick={() => handleDoubleClick(user.id, "email", user.email)}
+                >
+                  {editingUserId === user.id && editedFields.email !== undefined ? (
+                    <input
+                      type="text"
+                      value={editedFields.email}
+                      onChange={(e) => handleFieldChange(e, "email")}
+                      onBlur={() => handleBlur(user.id)}
+                      onKeyDown={(e) => handleKeyDown(e, user.id)}
+                      autoFocus
+                    />
+                  ) : (
+                    user.email
+                  )}
                 </td>
+                {deleteCell(user)}
               </tr>
             ))}
           </tbody>

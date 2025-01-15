@@ -6,7 +6,7 @@ const cors = require('cors'); // Import cors middleware
 // import sequelize connection
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3001;
 
 app.use(cors());
 app.use(express.json());

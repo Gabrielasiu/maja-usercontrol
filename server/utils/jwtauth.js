@@ -7,12 +7,20 @@ const { User } = require('../models/User');
 const signToken = (user) => {
   return jwt.sign(
     { id: user.id, email: user.email, isAdmin: user.isAdmin },
-    process.env.JWT_SECRET, // Clave secreta para firmar el token
+    "secret", // Clave secreta para firmar el token
     { expiresIn: '2h' } // El token expira en 2 horas
   );
 };
 
 module.exports = {
+  signToken (user) {
+    return jwt.sign(
+      { id: user.id, email: user.email, isAdmin: user.isAdmin },
+      "secret", // Clave secreta para firmar el token
+      { expiresIn: '2h' } // El token expira en 2 horas
+    );
+  },
+
   async login(req, res) {
     const { email, password } = req.body;
     const user = await User.findOne({ where: { email } });
