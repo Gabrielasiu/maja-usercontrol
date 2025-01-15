@@ -1,6 +1,8 @@
 const { Model, DataTypes } = require('sequelize');
 const bcrypt = require('bcrypt');
 const sequelize = require('../config/connection.js');
+const { NUMBER } = require('sequelize');
+const { INTEGER } = require('sequelize');
 
 class User extends Model { }
 
@@ -31,17 +33,13 @@ User.init(
         len: [8],
       },
     },
-    //TMB PUEDE SER ASI EN VEZ DE IS ADMIN
-    // role: {
-    //   type: DataTypes.STRING,
-    //   allowNull: false,
-    //   defaultValue: 'user', // Rol por defecto
-    // },
     isAdmin: {
       type: DataTypes.BOOLEAN,
       defaultValue: false,
+    },
+    createdBy: {
+      type: DataTypes.INTEGER
     }
-    
   },
   
   {

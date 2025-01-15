@@ -5,7 +5,7 @@ import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import Login from './components/login.component';
 import SignUp from './components/signup.component';
 import UsersPanel from './components/userspanel'; // Asegúrate de que la ruta sea correcta
-
+import CreateUser from './components/createuser';
 function App() {
   return (
     <Router>
@@ -39,6 +39,8 @@ function App() {
               <Route path="/sign-up" element={<SignUp />} />
               {/* Nueva ruta para el panel de usuarios */}
               <Route path="/users" element={<UsersPanel />} />
+              <Route path="/" element={<UsersPanel />} />
+        <Route path="/create-user" element={<CreateUser />} />
             </Routes>
           </div>
         </div>

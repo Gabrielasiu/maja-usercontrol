@@ -5,31 +5,39 @@ const userData = [
     user_name: 'Shirts',
     email: "gaby@gmail.com",
     password: "12345678",
-    isAdmin: true
+    isAdmin: true,
+    createdBy: null
   },
   {
     user_name: 'Shorts',
     email: "gaby2@gmail.com",
     password: "12345678",
-    isAdmin: false
+    isAdmin: false,
+    createdBy: null
+
   },
   {
     user_name: 'Music',
     email: "gaby3@gmail.com",
     password: "12345678",
-    isAdmin: false
+    isAdmin: false,
+    createdBy: null
+
   },
   {
     user_name: 'Hats',
     email: "gaby4@gmail.com",
     password: "12345678",
-    isAdmin: false
+    isAdmin: false,
+    createdBy: null
+
   },
   {
     user_name: 'Shoes',
     email: "gaby5@gmail.com",
     password: "12345678",
-    isAdmin: false
+    isAdmin: false,
+    createdBy: null
   },
 ];
 

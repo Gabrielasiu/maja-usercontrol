@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const { where } = require('sequelize');
-const { User } = require('../../models');
+const User = require('../../models/User');
 const { signToken } = require('../../utils/jwtauth');
 // IMPORTAR CONTROLADOR DE LOGIN
 // const {login} = require('../../utils/jwtauth');

@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { getUsers, deleteUser, updateUser, getMe } from '../utils/API';
 import Auth from '../utils/auth';
+import { useNavigate } from 'react-router-dom';
 
 const UsersPanel = () => {
   const [users, setUsers, setUserData] = useState([]);
   const [editingUserId, setEditingUserId] = useState(null); // Usuario en edición
   const [editedFields, setEditedFields] = useState({}); // Campos editados temporalmente
-
+ const navigate = useNavigate();
   const loggedInUser = Auth.getProfile();
 
   console.log("USUARIO LOGGEADO: ", loggedInUser);
@@ -46,7 +47,9 @@ const UsersPanel = () => {
     // getUserData();
     fetchUsers(); // Llamar la función al cargar el componente
   }, []);
-
+  const handleCreateUser = () => {
+    navigate('/create-user'); // Ruta hacia la página de creación de usuario
+  };
   const handleDelete = async (id) => {
     try {
       const response = await deleteUser(id); // Llama a la API para eliminar al usuario
@@ -120,6 +123,21 @@ const UsersPanel = () => {
     return (
       <div style={{ padding: '20px' }}>
         <h1>Users Panel</h1>
+        {loggedInUser.isAdmin && (
+        <button
+          onClick={handleCreateUser}
+          style={{
+            marginBottom: '20px',
+            padding: '10px 20px',
+            backgroundColor: 'blue',
+            color: 'white',
+            border: 'none',
+            borderRadius: '5px',
+          }}
+        >
+          Crear Usuario
+        </button>
+      )}
         <table style={{ width: '100%', borderCollapse: 'collapse' }}>
           <thead>
             <tr>
