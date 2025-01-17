@@ -1,12 +1,12 @@
 
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import Auth from '../utils/auth'
+import { Link } from 'react-router-dom';
 
 const SignUp = () => {
   const [user_name, setUserName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const navigate = useNavigate(); // hook useNavigate para redirigir
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -18,13 +18,12 @@ const SignUp = () => {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ user_name, email, password }),
         });
-// console.log('Response status:', response.status);
-// const data = await response.json();
-//       console.log('Response data:', data);
-        
+
         if (response.ok) {
-          // Si el registro es exitoso, redirige al panel de usuarios
-          navigate('/users');
+          console.log('Redirigiendo al panel de usuarios...');
+          const resp = await response.json();
+          console.log("response SIGN UP: ", resp);
+          Auth.login(resp.token);
         } else {
           alert('Failed to sign up. Please try again.');
         }
@@ -49,7 +48,7 @@ const SignUp = () => {
           onChange={(e) => setUserName(e.target.value)}
         />
       </div>
-    
+
       <div className="mb-3">
         <label>Email Address</label>
         <input
@@ -76,7 +75,7 @@ const SignUp = () => {
         </button>
       </div>
       <p className="forgot-password text-right">
-        Already registered? <a href="/sign-in">Sign in</a>
+        Already registered? <Link to="/sign-in">Sign in</Link>
       </p>
     </form>
   );

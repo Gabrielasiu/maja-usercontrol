@@ -1,8 +1,6 @@
 const { Model, DataTypes } = require('sequelize');
 const bcrypt = require('bcrypt');
 const sequelize = require('../config/connection.js');
-const { NUMBER } = require('sequelize');
-const { INTEGER } = require('sequelize');
 
 class User extends Model { }
 
@@ -41,7 +39,6 @@ User.init(
       type: DataTypes.INTEGER
     }
   },
-  
   {
     sequelize,
     timestamps: false,
@@ -52,18 +49,14 @@ User.init(
 );
 // Método para verificar si la contraseña es correcta
 User.prototype.isCorrectPassword = async function (password) {
-  return bcrypt.compare(password, this.password);  // Compara la contraseña ingresada con la almacenada
+  return bcrypt.compare(password, this.password);  // Compara la contraseña ingresada(password) con la almacenada(this.password)
 };
 
+
+//antes de que se cree el usuario, se utiliza bcrypt para hashear la contraseña
 // // Método para cifrar la contraseña antes de guardarla en la base de datos
 User.beforeCreate(async (user) => {
   user.password = await bcrypt.hash(user.password, 10);  // Cifra la contraseña antes de crear el usuario
-});
-
-User.beforeUpdate(async (user) => {
-  if (user.changed('password')) {
-    user.password = await bcrypt.hash(user.password, 10);  // Cifra la nueva contraseña antes de actualizar el usuario
-  }
 });
 
 module.exports = User;

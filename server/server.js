@@ -1,23 +1,18 @@
-const express = require('express');
-const routes = require('./routes');
-const sequelize = require('./config/connection');
-const cors = require('cors'); // Import cors middleware
+const express = require('express'); // importa express de express
+const routes = require('./routes/user-routes'); // importa las rutas de mi archivo rutas
+const sequelize = require('./config/connection'); //import sequelize de mi archivo de configuracion
+const cors = require('cors'); //importa el paquete cors 
 
-// import sequelize connection
+const app = express(); // manda llamar la funcion express()
+const PORT = process.env.PORT || 3001; // 
 
-const app = express();
-const PORT = process.env.PORT || 3001;
+app.use(cors()); // use es un metodo de express que llama a cors
+app.use(express.json()); // metodo para parsear json
 
-app.use(cors());
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(routes); //express utiliza routes
 
-app.use(routes);
 
-// sync sequelize models to the database, then turn on the server
-// app.listen(PORT, () => {
-//   console.log(`App listening on port ${PORT}!`);
-// });
+// sincroniza sqeueliz con la base de datos 
 sequelize.sync({ force: false }).then(() => {
   app.listen(PORT, () => console.log('Now listening'));
 });

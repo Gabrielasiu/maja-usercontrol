@@ -1,3 +1,5 @@
+
+//importacion de REACT y de los componenetes y necesarios 
 import React from 'react';
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
@@ -6,6 +8,11 @@ import Login from './components/login.component';
 import SignUp from './components/signup.component';
 import UsersPanel from './components/userspanel'; // Asegúrate de que la ruta sea correcta
 import CreateUser from './components/createuser';
+import Auth from './utils/auth'
+
+//compomemte app es mi pagina base, aqui es donde se recargará el componente que sea llamado dependiendo 
+// la ruta que se utilice (/'sign-up, /'users, etc )
+//router es un tag importado de react dom 
 function App() {
   return (
     <Router>
@@ -33,14 +40,15 @@ function App() {
         </nav>
         <div className="auth-wrapper">
           <div className="auth-inner">
+
+            {/* rutas para cada componente  */}
             <Routes>
-              <Route exact path="/" element={<Login />} />
+              <Route path="/" element={<Login />} />
               <Route path="/sign-in" element={<Login />} />
               <Route path="/sign-up" element={<SignUp />} />
               {/* Nueva ruta para el panel de usuarios */}
-              <Route path="/users" element={<UsersPanel />} />
-              <Route path="/" element={<UsersPanel />} />
-        <Route path="/create-user" element={<CreateUser />} />
+              <Route path="/users" element={Auth.loggedIn() ? <UsersPanel /> : <Login />} />
+              <Route path="/create-user" element={Auth.loggedIn() ? <CreateUser /> : <Login />} />
             </Routes>
           </div>
         </div>
