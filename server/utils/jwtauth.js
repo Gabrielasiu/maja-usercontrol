@@ -13,14 +13,15 @@ const signToken = (user) => {
 };
 
 module.exports = {
-  signToken (user) {
+  // funcion para generar un jwty aut al user y el acceso a ciertas rutas 
+  signToken(user) {
     return jwt.sign(
       { id: user.id, email: user.email, isAdmin: user.isAdmin },
       "secret", // Clave secreta para firmar el token
       { expiresIn: '2h' } // El token expira en 2 horas
     );
   },
-
+  //dar aut al user y el acceso a ciertas rutas  
   async login(req, res) {
     const { email, password } = req.body;
     const user = await User.findOne({ where: { email } });
@@ -29,8 +30,8 @@ module.exports = {
       return res.status(401).json({ message: 'Credenciales inválidas' });
     }
 
-    // Generar token
+    // Generar token llamando a la funcion signtoken 
     const token = signToken(user);
-    res.json({ token });
+    res.json({ token }); // enviar al cient el token generado
   },
 };

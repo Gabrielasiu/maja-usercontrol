@@ -49,6 +49,7 @@ router.get('/api/users/:id', async (req, res) => {
   }
 });
 
+//agregar usuario al usuario registrado
 router.post('/api/users/', async (req, res) => {
   const { user_name, email, password, createdBy } = req.body;
 
@@ -66,7 +67,7 @@ router.post('/api/users/', async (req, res) => {
   }
 });
 
-//create new user LE QUITE EL IS ADMIN
+//registrar new user LE QUITE EL IS ADMIN
 router.post('/api/users/register', async (req, res) => {
   const { user_name, email, password } = req.body;
 

@@ -2,9 +2,12 @@ const { Model, DataTypes } = require('sequelize');
 const bcrypt = require('bcrypt');
 const sequelize = require('../config/connection.js');
 
+
+//user heredada model y model tiene las propiedades de sequelize 
 class User extends Model { }
 
 User.init(
+  // columnas
   {
     id: {
       type: DataTypes.INTEGER,
@@ -52,9 +55,8 @@ User.prototype.isCorrectPassword = async function (password) {
   return bcrypt.compare(password, this.password);  // Compara la contraseña ingresada(password) con la almacenada(this.password)
 };
 
-
-//antes de que se cree el usuario, se utiliza bcrypt para hashear la contraseña
-// // Método para cifrar la contraseña antes de guardarla en la base de datos
+// recibe el usuario que se va a crear, toma la propiedad .passworkd y le hace un hash. Ya que se haga el hash se crea   
+// Método para cifrar la contraseña antes de guardarla en la base de datos
 User.beforeCreate(async (user) => {
   user.password = await bcrypt.hash(user.password, 10);  // Cifra la contraseña antes de crear el usuario
 });
