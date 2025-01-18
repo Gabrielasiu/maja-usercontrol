@@ -38,15 +38,15 @@ Panel de Administración: Los administradores pueden acceder a un panel donde pu
 
 ## Intsalacion
 Dirígete a la carpeta server:
-bash
-cd server
+
+bash cd server
 
 Instala las dependencias:
-bash 
 
-npm install
+bash npm install
 
 Configura las variables de entorno en un archivo .env:
+
 bash
 
 DB_NAME=nombre_de_tu_base_de_datos
@@ -63,15 +63,14 @@ bash
 npm start
 
 Frontend (Aplicación React)
-Dirígete a la carpeta front:
-bash
 
-cd front
+Dirígete a la carpeta front:
+
+bash cd front
 
 Instala las dependencias:
-bash
 
-npm install
+bash npm install
 
 Ejecuta el servidor
 npm start
