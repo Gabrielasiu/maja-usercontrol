@@ -42,27 +42,35 @@ bash
 cd server
 
 Instala las dependencias:
-bash
+bash 
+
 npm install
 
 Configura las variables de entorno en un archivo .env:
 bash
+
 DB_NAME=nombre_de_tu_base_de_datos
+
 DB_USER=tu_usuario_de_base_de_datos
+
 DB_PASSWORD=tu_contraseña_de_base_de_datos
+
 JWT_SECRET=tu_secreto_jwt
 
 Ejecuta el servidor:
 bash
+
 npm start
 
 Frontend (Aplicación React)
 Dirígete a la carpeta front:
 bash
+
 cd front
 
 Instala las dependencias:
 bash
+
 npm install
 
 Ejecuta el servidor
