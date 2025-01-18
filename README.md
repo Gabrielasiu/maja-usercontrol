@@ -5,17 +5,17 @@ Maja User Control es una aplicación full-stack diseñada para la gestión de us
 
 ## Tecnologías utilizadas
 Frontend:
-React
-React Router
+React,
+React Router, 
 Bootstrap
 
 Backend:
-Node.js
-Express
-Sequelize (ORM)
-PostgreSQL
-Autenticación:
+Node.js,
+Express,
+Sequelize (ORM),
+PostgreSQL, 
 
+Autenticación:
 JWT (JSON Web Token)
 
 ## Características
