@@ -1,5 +1,5 @@
 # MAJA-usercontrol
-Go to the deployed app https://maja-usercontrol-2.onrender.com 
+Echa un vistazo a mi app desplegada: https://maja-usercontrol-2.onrender.com 
 
 Maja User Control es una aplicación full-stack diseñada para la gestión de usuarios. Permite a los administradores agregar, actualizar y eliminar usuarios, mientras que los usuarios comunes pueden visualizar su información.
 
