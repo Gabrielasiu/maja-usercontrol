@@ -20,9 +20,13 @@ JWT (JSON Web Token)
 
 ## Características
 Registro de usuarios: Los usuarios pueden registrarse proporcionando un nombre, correo electrónico y contraseña.
+
 Inicio de sesión: Los usuarios pueden iniciar sesión con sus credenciales para acceder a la aplicación.
+
 Panel de administración: Los administradores pueden ver, editar o eliminar usuarios del sistema.
+
 Roles de usuario: El sistema distingue entre usuarios comunes y administradores.
+
 Seguridad: Las contraseñas se almacenan de forma segura utilizando bcrypt, y la autenticación se maneja a través de JWT.
 
 ## Uso
