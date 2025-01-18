@@ -31,7 +31,9 @@ Seguridad: Las contraseñas se almacenan de forma segura utilizando bcrypt, y la
 
 ## Uso
 Registro de Usuario: Los nuevos usuarios pueden registrarse completando el formulario de registro con su nombre, correo electrónico y contraseña.
+
 Inicio de Sesión: Después de registrarse, los usuarios pueden iniciar sesión para acceder a sus datos y al panel de administración si tienen privilegios de administrador.
+
 Panel de Administración: Los administradores pueden acceder a un panel donde pueden ver la lista de usuarios registrados, editar su información y eliminar usuarios.
 
 ## Intsalacion
